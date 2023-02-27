@@ -1,12 +1,12 @@
 #define GUEEPO2D_MAIN
 #include <gueepo2d.h>
 
-class Sample : public gueepo::Application {
+class GoblinApplication : public gueepo::Application {
 public:
-	Sample() : Application("sample ", 640, 360) {}
-	~Sample() {}
+	GoblinApplication() : Application("Goblin Game Engine", 640, 360) {}
+	~GoblinApplication() {}
 };
 
 gueepo::Application* gueepo::CreateApplication() {
-	return new Sample();
+	return new GoblinApplication();
 }
