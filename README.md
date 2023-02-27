@@ -1,7 +1,12 @@
-# gueepo2D Sample Project
+# The Goblin Game Engine
 
-## Building
-0. Download and install [https://cmake.org/](CMake) if you don't have it already.
-1. Download the repository `git clone --recursive https://github.com/guilhermepo2/gueepo2D-sample.git`
-2. Run CMake `cmake -Bbuild .`, or run it with VSCode or a GUI tool. You can download and manually set `SDL2_PATH` on `CMakeLists.txt` on the `src/lib/gueepo2D/gueepo2D/engine/` folder, if that's not defined, CMake will download SDL2 2.0.18 automatically.
-3. Open `gueepo2D-sample.sln` on the `build/` folder.
+1. built with gueepo2D
+2. ECS
+3. LUA
+4. Editor
+   1. The editor should be able to create/edit/save/load maps, and tilemaps
+   2. The editor should be able to create/edit/save/load entities
+   3. The editor should be able to create/edit/save/load scenes
+   4. The editor should be able to create/edit/save/load resources
+
+The end goal is to be able to create an entire game without coding C++, but if I can and think it's a good idea to do C++ while making a game with The Goblin Game Engine, then cool.
