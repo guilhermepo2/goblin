@@ -1,8 +1,9 @@
 #define GUEEPO2D_MAIN
 #include <gueepo2d.h>
+#include "goblin.h"
 
-#include "ResourceManager.h"
 static gbln::ResourceManager g_ResourceManager;
+static gbln::GameWorld g_GameWorld;
 
 class GoblinApplication : public gueepo::Application {
 public:
@@ -10,6 +11,8 @@ public:
 	~GoblinApplication() {}
 
     void Application_OnInitialize() override;
+    void Application_OnUpdate(float DeltaTime) override;
+    void Application_OnInput(const gueepo::InputState& currentInputState) override;
     void Application_OnRender() override;
 
 private:
@@ -19,27 +22,33 @@ private:
 void GoblinApplication::Application_OnInitialize() {
     m_camera = new gueepo::OrtographicCamera(640, 360);
     g_ResourceManager.LoadResource("./assets/resources.json");
+
+    gbln::Entity* goblinKing = g_GameWorld.AddEntity("Goblin King");
+    goblinKing->AddComponent<gbln::Transform>(gueepo::math::vec2(0.0f, 0.0f), .0f, gueepo::math::vec2(3.0f, 3.0f));
+    goblinKing->AddComponent<gbln::Sprite>(g_ResourceManager.GetTexture("the_goblin_king"));
+
+    g_GameWorld.BeginPlay();
+}
+
+void GoblinApplication::Application_OnInput(const gueepo::InputState &currentInputState) {
+    g_GameWorld.ProcessInput(currentInputState);
+}
+
+void GoblinApplication::Application_OnUpdate(float DeltaTime) {
+    gbln::Entity* goblinKing = g_GameWorld.GetEntityByName("Goblin King");
+
+    if(goblinKing != nullptr) {
+        goblinKing->GetComponentOfType<gbln::Transform>()->rotation += 1.0f * DeltaTime;
+    }
+
+    g_GameWorld.Update(DeltaTime);
 }
 
 void GoblinApplication::Application_OnRender() {
-    gueepo::Texture* archer = g_ResourceManager.GetTexture("the_goblin_archer");
-    gueepo::Texture* barbarian = g_ResourceManager.GetTexture("the_goblin_barbarian");
-    gueepo::Texture* king = g_ResourceManager.GetTexture("the_goblin_king");
-    gueepo::Texture* warrior = g_ResourceManager.GetTexture("the_goblin_warrior");
-    gueepo::Texture* wizard = g_ResourceManager.GetTexture("the_goblin_wizard");
-
-    gueepo::Texture* lofi_goblins = g_ResourceManager.GetTexture("lofi_goblins");
 
     gueepo::Renderer::BeginFrame(*m_camera);
     gueepo::Renderer::Clear(0.5f, 0.1f, 0.1f, 1.0f);
-
-    gueepo::Renderer::Draw(archer   , -128, 128, 64, 64);
-    gueepo::Renderer::Draw(barbarian, -64, 128, 64, 64);
-    gueepo::Renderer::Draw(king     , 0, 128, 64, 64);
-    gueepo::Renderer::Draw(warrior  , 64, 128, 64, 64);
-    gueepo::Renderer::Draw(wizard   , 128, 128, 64, 64);
-    gueepo::Renderer::Draw(lofi_goblins, 0, 48, 48 * 4, 32);
-
+    g_GameWorld.Render();
     gueepo::Renderer::EndFrame();
 }
 

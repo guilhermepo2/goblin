@@ -29,6 +29,10 @@ void gbln::Entity::Update(float DeltaTime) {
 void gbln::Entity::Render() {
     // todo
     // should this just be delegated or should the entity actually check for sprite components and render it?
+    // for now let's just delegate it...
+    for(int i = 0; i < m_components.size(); i++) {
+        m_components[i]->Render();
+    }
 }
 
 void gbln::Entity::Destroy() {

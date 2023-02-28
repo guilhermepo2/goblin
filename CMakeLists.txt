@@ -14,7 +14,8 @@ add_executable(${PROJECT_NAME}
         src/ResourceManager.cpp src/ResourceManager.h
         src/GameWorld.cpp src/GameWorld.h
         src/Component.h
-        src/Entity.cpp src/Entity.h)
+        src/Entity.cpp src/Entity.h
+        src/goblin.h src/Transform.h src/Sprite.h)
 
 target_link_directories(${PROJECT_NAME}
     PUBLIC
