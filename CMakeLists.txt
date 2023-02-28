@@ -11,9 +11,10 @@ set_target_properties(glad gueepo2D-engine PROPERTIES FOLDER thirdparty)
 
 add_executable(${PROJECT_NAME}
         src/main.cpp
-        src/ResourceManager.cpp
-        src/ResourceManager.h
-        )
+        src/ResourceManager.cpp src/ResourceManager.h
+        src/GameWorld.cpp src/GameWorld.h
+        src/Component.h
+        src/Entity.cpp src/Entity.h)
 
 target_link_directories(${PROJECT_NAME}
     PUBLIC
