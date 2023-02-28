@@ -18,12 +18,7 @@ private:
 
 void GoblinApplication::Application_OnInitialize() {
     m_camera = new gueepo::OrtographicCamera(640, 360);
-    g_ResourceManager.AddTexture("the_goblin_archer", "./assets/goblins/oryx_goblin_archer.png");
-    g_ResourceManager.AddTexture("the_goblin_barbarian", "./assets/goblins/oryx_goblin_barbarian.png");
-    g_ResourceManager.AddTexture("the_goblin_king", "./assets/goblins/oryx_goblin_king.png");
-    g_ResourceManager.AddTexture("the_goblin_warrior", "./assets/goblins/oryx_goblin_warrior.png");
-    g_ResourceManager.AddTexture("the_goblin_wizard", "./assets/goblins/oryx_goblin_wizard.png");
-    g_ResourceManager.AddTexture("lofi-goblins", "./assets/goblins/lofi-goblins.png");
+    g_ResourceManager.LoadResource("./assets/resources.json");
 }
 
 void GoblinApplication::Application_OnRender() {
@@ -33,7 +28,7 @@ void GoblinApplication::Application_OnRender() {
     gueepo::Texture* warrior = g_ResourceManager.GetTexture("the_goblin_warrior");
     gueepo::Texture* wizard = g_ResourceManager.GetTexture("the_goblin_wizard");
 
-    gueepo::Texture* lofi_goblins = g_ResourceManager.GetTexture("lofi-goblins");
+    gueepo::Texture* lofi_goblins = g_ResourceManager.GetTexture("lofi_goblins");
 
     gueepo::Renderer::BeginFrame(*m_camera);
     gueepo::Renderer::Clear(0.5f, 0.1f, 0.1f, 1.0f);

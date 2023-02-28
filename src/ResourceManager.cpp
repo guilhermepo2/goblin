@@ -9,7 +9,28 @@ namespace gbln {
     }
 
     void ResourceManager::LoadResource(gueepo::string filepath) {
-        // todo! Is this going to be a json or a lua file?
+        gueepo::json resourcesFile(filepath.c_str());
+
+        if(!resourcesFile.IsValid()) {
+            return;
+        }
+
+        // (1) Loading Textures
+        gueepo::json texturesObject;
+        resourcesFile.GetArray("textures", texturesObject);
+        if(texturesObject.IsArray()) {
+            for(int i = 0; i < texturesObject.GetArraySize(); i++) {
+                gueepo::json tempObject;
+                texturesObject.GetObjectInArray(i, tempObject);
+                if(tempObject.IsValid()) {
+                    std::string textureId;
+                    std::string texturePath;
+                    tempObject.GetString("id", textureId);
+                    tempObject.GetString("path", texturePath);
+                    AddTexture(textureId.c_str(), texturePath.c_str());
+                }
+            }
+        }
     }
 
     void ResourceManager::ClearResources() {

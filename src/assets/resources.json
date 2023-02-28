@@ -1,0 +1,28 @@
+{
+  "textures": [
+    {
+      "id": "the_goblin_archer",
+      "path": "./assets/goblins/oryx_goblin_archer.png"
+    },
+    {
+      "id": "the_goblin_barbarian",
+      "path": "./assets/goblins/oryx_goblin_barbarian.png"
+    },
+    {
+      "id": "the_goblin_king",
+      "path": "./assets/goblins/oryx_goblin_king.png"
+    },
+    {
+      "id": "the_goblin_warrior",
+      "path": "./assets/goblins/oryx_goblin_warrior.png"
+    },
+    {
+      "id": "the_goblin_wizard",
+      "path": "./assets/goblins/oryx_goblin_wizard.png"
+    },
+    {
+      "id": "lofi_goblins",
+      "path": "./assets/goblins/lofi-goblins.png"
+    }
+  ]
+}
