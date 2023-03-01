@@ -1,4 +1,4 @@
-#pragma once;
+#pragma once
 #include "gueepo2d.h"
 
 namespace gbln {

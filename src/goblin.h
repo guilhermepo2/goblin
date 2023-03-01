@@ -6,3 +6,4 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Sprite.h"
+#include "LuaComponent.h"
