@@ -7,6 +7,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # dependencies
 add_subdirectory(src/lib/gueepo2D/gueepo2D/thirdparty/glad)
 add_subdirectory(src/lib/gueepo2D/gueepo2D/engine)
+add_subdirectory(src/lib/Lua)
 set_target_properties(glad gueepo2D-engine PROPERTIES FOLDER thirdparty)
 
 add_executable(${PROJECT_NAME}
@@ -23,6 +24,7 @@ target_link_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} gueepo2D-engine)
+target_link_libraries(${PROJECT_NAME} lua_static)
 
 if(WIN32)
     if(EXISTS ${SDL2_PATH}/lib/x64/SDL2.dll)
