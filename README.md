@@ -1,4 +1,4 @@
-# Goblin Game Engine ![Goblin](src/assets/goblins/oryx_goblin_king.png)
+# Goblin Game Engine ![Goblin](gbln.png)
 
 1. built with gueepo2D
 2. Resource Manager
