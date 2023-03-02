@@ -5,6 +5,7 @@
 static gbln::ResourceManager g_ResourceManager;
 static gbln::GameWorld g_GameWorld;
 static gueepo::FontSprite* g_dogica = nullptr;
+static gueepo::FontSprite* g_dogicaSmall = nullptr;
 
 class GoblinApplication : public gueepo::Application {
 public:
@@ -28,6 +29,9 @@ void GoblinApplication::Application_OnInitialize() {
     if(dogicaPixelFontFile != nullptr) {
         g_dogica = new gueepo::FontSprite(dogicaPixelFontFile, 24);
         g_dogica->SetLineGap(27.0f);
+
+        g_dogicaSmall = new gueepo::FontSprite(dogicaPixelFontFile, 8);
+        g_dogicaSmall->SetLineGap(8.0f);
     }
 
     g_ResourceManager.LoadResource("./assets/resources.json");
@@ -57,6 +61,15 @@ void GoblinApplication::Application_OnRender() {
             g_dogica,
             "The\nGoblin\nGame Engine",
             gueepo::math::vec2(-20.0f, 30.0f),
+            1.0f,
+            gueepo::Color(1.0f, 1.0f, 1.0f, 1.0f)
+            );
+
+    float lineWidth = g_dogicaSmall->GetWidthOf("(c) gueepo");
+    gueepo::Renderer::DrawString(
+            g_dogicaSmall,
+            "(c) gueepo",
+            gueepo::math::vec2(-lineWidth/2.0f, -165.0f),
             1.0f,
             gueepo::Color(1.0f, 1.0f, 1.0f, 1.0f)
             );
