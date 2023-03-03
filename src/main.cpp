@@ -25,6 +25,7 @@ private:
 void GoblinApplication::Application_OnInitialize() {
     m_camera = new gueepo::OrtographicCamera(640, 360);
 
+
     gueepo::Font* dogicaPixelFontFile = gueepo::Font::CreateNewFont("./assets/dogica/TTF/dogicapixelbold.ttf");
     if(dogicaPixelFontFile != nullptr) {
         g_dogica = new gueepo::FontSprite(dogicaPixelFontFile, 24);
@@ -39,7 +40,7 @@ void GoblinApplication::Application_OnInitialize() {
     gbln::Entity* goblinKing = g_GameWorld.AddEntity("Goblin King");
     goblinKing->AddComponent<gbln::Transform>(gueepo::math::vec2(-100.0f, 0.0f), .0f, gueepo::math::vec2(-6.0f, 6.0f));
     goblinKing->AddComponent<gbln::Sprite>(g_ResourceManager.GetTexture("the_goblin_king"));
-    // goblinKing->AddComponent<gbln::LuaComponent>("./assets/test.lua");
+    goblinKing->AddComponent<gbln::LuaComponent>("./assets/test.lua");
 
     g_GameWorld.BeginPlay();
 }
@@ -65,6 +66,7 @@ void GoblinApplication::Application_OnRender() {
             gueepo::Color(1.0f, 1.0f, 1.0f, 1.0f)
             );
 
+
     float lineWidth = g_dogicaSmall->GetWidthOf("(c) gueepo");
     gueepo::Renderer::DrawString(
             g_dogicaSmall,
@@ -73,6 +75,7 @@ void GoblinApplication::Application_OnRender() {
             1.0f,
             gueepo::Color(1.0f, 1.0f, 1.0f, 1.0f)
             );
+
     gueepo::Renderer::EndFrame();
 }
 
