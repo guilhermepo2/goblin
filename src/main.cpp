@@ -23,8 +23,8 @@ private:
 };
 
 void GoblinApplication::Application_OnInitialize() {
+    //
     m_camera = new gueepo::OrtographicCamera(640, 360);
-
 
     gueepo::Font* dogicaPixelFontFile = gueepo::Font::CreateNewFont("./assets/dogica/TTF/dogicapixelbold.ttf");
     if(dogicaPixelFontFile != nullptr) {
