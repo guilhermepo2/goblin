@@ -4,6 +4,7 @@
 
 static gbln::ResourceManager g_ResourceManager;
 static gbln::GameWorld g_GameWorld;
+static gueepo::UIManager* g_UI;
 static gueepo::FontSprite* g_dogica = nullptr;
 static gueepo::FontSprite* g_dogicaSmall = nullptr;
 
@@ -14,6 +15,7 @@ public:
 	~GoblinApplication() {}
 
     void Application_OnInitialize() override;
+    void Application_OnDeinitialize() override;
     void Application_OnUpdate(float DeltaTime) override;
     void Application_OnInput(const gueepo::InputState& currentInputState) override;
     void Application_OnRender() override;
@@ -35,6 +37,18 @@ void GoblinApplication::Application_OnInitialize() {
         g_dogicaSmall->SetLineGap(8.0f);
     }
 
+    g_UI = new gueepo::UIManager(640, 360);
+
+    gueepo::Label* copywrightText = new gueepo::Label("(c) gueepo", g_dogicaSmall);
+    copywrightText->SetPosition(gueepo::math::vec2(0.0f, -165.0f));
+    copywrightText->SetAlignment(gueepo::ALIGNMENT::CENTER);
+    g_UI->Push(copywrightText);
+
+    gueepo::Label* goblinGameEngine = new gueepo::Label("The\nGoblin\nGame Engine", g_dogica);
+    goblinGameEngine->SetPosition(gueepo::math::vec2(-20.0f, 30.0f));
+    g_UI->Push(goblinGameEngine);
+
+
     g_ResourceManager.LoadResource("./assets/resources.json");
 
     gbln::Entity* goblinKing = g_GameWorld.AddEntity("Goblin King");
@@ -45,12 +59,18 @@ void GoblinApplication::Application_OnInitialize() {
     g_GameWorld.BeginPlay();
 }
 
+void GoblinApplication::Application_OnDeinitialize() {
+    g_ResourceManager.ClearResources();
+}
+
 void GoblinApplication::Application_OnInput(const gueepo::InputState &currentInputState) {
     g_GameWorld.ProcessInput(currentInputState);
+    g_UI->ProcessInput(currentInputState);
 }
 
 void GoblinApplication::Application_OnUpdate(float DeltaTime) {
     g_GameWorld.Update(DeltaTime);
+    g_UI->Update(DeltaTime);
 }
 
 void GoblinApplication::Application_OnRender() {
@@ -58,24 +78,7 @@ void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::Clear(0.1f, 0.6f, 0.1f, 1.0f);
     g_GameWorld.Render();
 
-    gueepo::Renderer::DrawString(
-            g_dogica,
-            "The\nGoblin\nGame Engine",
-            gueepo::math::vec2(-20.0f, 30.0f),
-            1.0f,
-            gueepo::Color(1.0f, 1.0f, 1.0f, 1.0f)
-            );
-
-
-    float lineWidth = g_dogicaSmall->GetWidthOf("(c) gueepo");
-    gueepo::Renderer::DrawString(
-            g_dogicaSmall,
-            "(c) gueepo",
-            gueepo::math::vec2(-lineWidth/2.0f, -165.0f),
-            1.0f,
-            gueepo::Color(1.0f, 1.0f, 1.0f, 1.0f)
-            );
-
+    g_UI->Render();
     gueepo::Renderer::EndFrame();
 }
 
