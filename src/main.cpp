@@ -48,8 +48,9 @@ void GoblinApplication::Application_OnInitialize() {
     goblinGameEngine->SetPosition(gueepo::math::vec2(-20.0f, 30.0f));
     g_UI->Push(goblinGameEngine);
 
-
+    //
     g_ResourceManager.LoadResource("./assets/resources.json");
+    g_ResourceManager.LoadTextureRegions("./assets/planes.json");
 
     gbln::Entity* goblinKing = g_GameWorld.AddEntity("Goblin King");
     goblinKing->AddComponent<gbln::Transform>(gueepo::math::vec2(-100.0f, 0.0f), .0f, gueepo::math::vec2(-6.0f, 6.0f));
@@ -76,9 +77,25 @@ void GoblinApplication::Application_OnUpdate(float DeltaTime) {
 void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::BeginFrame(*m_camera);
     gueepo::Renderer::Clear(0.1f, 0.6f, 0.1f, 1.0f);
-    g_GameWorld.Render();
 
-    g_UI->Render();
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeBlue1"), -200, 100);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeBlue2"), -100, 100);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeBlue3"), 0, 100);
+
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeGreen1"), -200, 0);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeGreen2"), -100, 0);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeGreen3"), 0, 0);
+
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeRed1"), -200, -100);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeRed2"), -100, -100);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeRed3"), 0, -100);
+
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeYellow1"), 100, 100);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeYellow2"), 100, 0);
+    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeYellow3"), 100, -100);
+
+    // g_GameWorld.Render();
+    // g_UI->Render();
     gueepo::Renderer::EndFrame();
 }
 
