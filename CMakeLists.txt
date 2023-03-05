@@ -16,7 +16,7 @@ add_executable(${PROJECT_NAME}
         src/GameWorld.cpp src/GameWorld.h
         src/Component.h
         src/Entity.cpp src/Entity.h
-        src/goblin.h src/Transform.h src/Sprite.h src/LuaComponent.cpp src/LuaComponent.h)
+        src/goblin.h src/Transform.h src/Sprite.h src/LuaComponent.cpp src/LuaComponent.h src/SpriteAnimation.cpp src/SpriteAnimation.h)
 
 target_link_directories(${PROJECT_NAME}
     PUBLIC

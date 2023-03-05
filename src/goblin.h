@@ -7,3 +7,4 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include "LuaComponent.h"
+#include "SpriteAnimation.h"

@@ -8,6 +8,8 @@ static gueepo::UIManager* g_UI;
 static gueepo::FontSprite* g_dogica = nullptr;
 static gueepo::FontSprite* g_dogicaSmall = nullptr;
 
+static gueepo::SpriteAnimation planeAnimation;
+
 class GoblinApplication : public gueepo::Application {
 public:
     //
@@ -57,7 +59,16 @@ void GoblinApplication::Application_OnInitialize() {
     goblinKing->AddComponent<gbln::Sprite>(g_ResourceManager.GetTexture("the_goblin_king"));
     goblinKing->AddComponent<gbln::LuaComponent>("./assets/test.lua");
 
+    gbln::Entity* plane = g_GameWorld.AddEntity("theplane");
+    plane->AddComponent<gbln::Transform>(gueepo::math::vec2(0.0f, 0.0f), .0f, gueepo::math::vec2(1.0f, 1.0f));
+    plane->AddComponent<gbln::Sprite>();
+    gbln::SpriteAnimation* planeAnim = plane->AddComponent<gbln::SpriteAnimation>();
+    planeAnim->AddAnimationFrame(g_ResourceManager.GetTextureRegion("planeBlue1"), 0.1f);
+    planeAnim->AddAnimationFrame(g_ResourceManager.GetTextureRegion("planeBlue2"), 0.1f);
+    planeAnim->AddAnimationFrame(g_ResourceManager.GetTextureRegion("planeBlue3"), 0.1f);
+
     g_GameWorld.BeginPlay();
+
 }
 
 void GoblinApplication::Application_OnDeinitialize() {
@@ -72,29 +83,14 @@ void GoblinApplication::Application_OnInput(const gueepo::InputState &currentInp
 void GoblinApplication::Application_OnUpdate(float DeltaTime) {
     g_GameWorld.Update(DeltaTime);
     g_UI->Update(DeltaTime);
+    gueepo::SpriteAnimation_Update(planeAnimation, DeltaTime);
 }
 
 void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::BeginFrame(*m_camera);
     gueepo::Renderer::Clear(0.1f, 0.6f, 0.1f, 1.0f);
 
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeBlue1"), -200, 100);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeBlue2"), -100, 100);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeBlue3"), 0, 100);
-
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeGreen1"), -200, 0);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeGreen2"), -100, 0);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeGreen3"), 0, 0);
-
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeRed1"), -200, -100);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeRed2"), -100, -100);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeRed3"), 0, -100);
-
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeYellow1"), 100, 100);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeYellow2"), 100, 0);
-    gueepo::Renderer::Draw(g_ResourceManager.GetTextureRegion("planeYellow3"), 100, -100);
-
-    // g_GameWorld.Render();
+    g_GameWorld.Render();
     // g_UI->Render();
     gueepo::Renderer::EndFrame();
 }
