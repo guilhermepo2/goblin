@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-include(goblineditor.cmake)
 project(goblin-engine)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -17,7 +16,12 @@ add_executable(${PROJECT_NAME}
         src/GameWorld.cpp src/GameWorld.h
         src/Component.h
         src/Entity.cpp src/Entity.h
-        src/goblin.h src/Transform.h src/Sprite.h src/LuaComponent.cpp src/LuaComponent.h src/SpriteAnimation.cpp src/SpriteAnimation.h)
+        src/goblin.h
+        src/Transform.h
+        src/Sprite.h
+        src/LuaComponent.cpp src/LuaComponent.h
+        src/SpriteAnimation.cpp src/SpriteAnimation.h
+        )
 
 target_link_directories(${PROJECT_NAME}
     PUBLIC
