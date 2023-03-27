@@ -8,10 +8,17 @@ static gueepo::UIManager* g_UI;
 static gueepo::FontSprite* g_dogica = nullptr;
 static gueepo::FontSprite* g_dogicaSmall = nullptr;
 
+struct INITIALIZATION_OPTIONS {
+    std::string title;
+    unsigned int width;
+    unsigned int height;
+};
+
 class GoblinApplication : public gueepo::Application {
 public:
     //
 	GoblinApplication() : Application("Goblin Game Engine", 640, 360) {}
+    GoblinApplication(const INITIALIZATION_OPTIONS& init) : Application(init.title, init.width, init.height) {}
 	~GoblinApplication() {}
 
     void Application_OnInitialize() override;
@@ -84,5 +91,10 @@ void GoblinApplication::Application_OnRender() {
 }
 
 gueepo::Application* gueepo::CreateApplication() {
-	return new GoblinApplication();
+    // todo: load this from a .json
+    INITIALIZATION_OPTIONS options;
+    options.title = "Goblin Game Engine (opt)";
+    options.width = 640;
+    options.height = 360;
+	return new GoblinApplication(options);
 }
