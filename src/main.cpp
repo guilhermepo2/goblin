@@ -10,8 +10,8 @@ static gueepo::FontSprite* g_dogicaSmall = nullptr;
 
 struct INITIALIZATION_OPTIONS {
     std::string title;
-    unsigned int width;
-    unsigned int height;
+    int width;
+    int height;
 };
 
 class GoblinApplication : public gueepo::Application {
@@ -91,10 +91,16 @@ void GoblinApplication::Application_OnRender() {
 }
 
 gueepo::Application* gueepo::CreateApplication() {
-    // todo: load this from a .json
-    INITIALIZATION_OPTIONS options;
-    options.title = "Goblin Game Engine (opt)";
-    options.width = 640;
-    options.height = 360;
-	return new GoblinApplication(options);
+    gueepo::json configOptions("./assets/init.json");
+
+    if(configOptions.IsValid()) {
+        INITIALIZATION_OPTIONS options;
+        options.title = "Goblin Game Engine (opt)";
+        configOptions.GetString("title", options.title);
+        configOptions.GetInt("width", options.width);
+        configOptions.GetInt("height", options.height);
+        return new GoblinApplication(options);
+    } else {
+        return new GoblinApplication();
+    }
 }
