@@ -82,12 +82,12 @@ namespace gbln {
             return;
         }
 
-        gueepo::json internal;
-        textureAtlasObject.GetObject("TextureAtlas", internal);
+        gueepo::json internalTextureAtlasJson;
+        textureAtlasObject.GetJsonObject("TextureAtlas", internalTextureAtlasJson);
         std::string textureName;
         std::string texturePath;
-        internal.GetString("textureName", textureName);
-        internal.GetString("texturePath", texturePath);
+        internalTextureAtlasJson.GetString("textureName", textureName);
+        internalTextureAtlasJson.GetString("texturePath", texturePath);
         gueepo::Texture* textureAtlas = nullptr;
         if(!ContainsTexture(textureName)) {
             AddTexture(textureName.c_str(), texturePath.c_str());
@@ -103,7 +103,7 @@ namespace gbln {
         int textureHeight = textureAtlas->GetHeight();
 
         gueepo::json textureRegionsArray;
-        internal.GetArray("SubTextures", textureRegionsArray);
+        internalTextureAtlasJson.GetArray("SubTextures", textureRegionsArray);
         if(textureRegionsArray.IsArray()) {
             for(int i = 0; i < textureRegionsArray.GetArraySize(); i++) {
                 gueepo::json textureRegion;

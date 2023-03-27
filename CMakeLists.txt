@@ -8,7 +8,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_subdirectory(src/lib/gueepo2D/gueepo2D/thirdparty/glad)
 add_subdirectory(src/lib/gueepo2D/gueepo2D/engine)
 add_subdirectory(src/lib/Lua)
-set_target_properties(glad gueepo2D-engine PROPERTIES FOLDER thirdparty)
+set_target_properties(glad gueepo2D-engine lua_shared lua_static luac PROPERTIES FOLDER thirdparty)
 
 add_executable(${PROJECT_NAME}
         src/main.cpp
