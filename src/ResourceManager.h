@@ -8,10 +8,6 @@ namespace gbln {
         ResourceManager();
         ~ResourceManager();
 
-        // Move this into a factory file...
-        void LoadResource(gueepo::string filepath);
-        void LoadTextureRegions(gueepo::string filepath);
-
         void ClearResources();
 
         void AddTexture(gueepo::string textureId, gueepo::Texture* tex);

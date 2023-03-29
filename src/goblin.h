@@ -8,3 +8,4 @@
 #include "Sprite.h"
 #include "LuaComponent.h"
 #include "SpriteAnimation.h"
+#include "Factory.h"

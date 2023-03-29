@@ -33,8 +33,7 @@ void GoblinApplication::Application_OnInitialize() {
     m_camera = new gueepo::OrtographicCamera(640, 360);
 
     // #todo: all this should move to a "Factory" class
-	g_ResourceManager.LoadResource("./assets/resources.json");
-	g_ResourceManager.LoadTextureRegions("./assets/planes.json");
+    gbln::Factory::LoadResourceFile(&g_ResourceManager, "./assets/resources.json");
 	g_ResourceManager.AddFontSpriteFromPath("dogica-8", 8, "./assets/dogica/TTF/dogicapixelbold.ttf");
 	g_ResourceManager.AddFontSpriteFromPath("dogica-24", 24, "./assets/dogica/TTF/dogicapixelbold.ttf");
 

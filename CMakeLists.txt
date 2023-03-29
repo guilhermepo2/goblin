@@ -21,6 +21,7 @@ add_executable(${PROJECT_NAME}
         src/Sprite.h
         src/LuaComponent.cpp src/LuaComponent.h
         src/SpriteAnimation.cpp src/SpriteAnimation.h
+        src/Factory.cpp src/Factory.h
         )
 
 target_link_directories(${PROJECT_NAME}
