@@ -24,5 +24,17 @@
       "id": "lofi_goblins",
       "path": "./assets/goblins/lofi-goblins.png"
     }
+  ],
+  "fonts": [
+    {
+      "id": "dogica-8",
+      "fontSize": 8,
+      "path": "./assets/dogica/TTF/dogicapixelbold.ttf"
+    },
+    {
+      "id": "dogica-24",
+      "fontSize": 24,
+      "path": "./assets/dogica/TTF/dogicapixelbold.ttf"
+    }
   ]
 }

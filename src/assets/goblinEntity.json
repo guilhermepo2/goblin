@@ -1,0 +1,27 @@
+{
+  "name": "Goblin King",
+  "components": [
+    {
+      "type": "transform",
+      "properties": {
+        "x": -100,
+        "y": 0,
+        "rotation": 0,
+        "scale_x": -6,
+        "scale_y": 6
+      }
+    },
+    {
+      "type": "sprite",
+      "properties": {
+        "textureId": "the_goblin_king"
+      }
+    },
+    {
+      "type": "lua",
+      "properties": {
+        "path": "./assets/test.lua"
+      }
+    }
+  ]
+}

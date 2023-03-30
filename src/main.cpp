@@ -32,31 +32,19 @@ private:
 void GoblinApplication::Application_OnInitialize() {
     m_camera = new gueepo::OrtographicCamera(640, 360);
 
-    // #todo: all this should move to a "Factory" class
-    gbln::Factory::LoadResourceFile(&g_ResourceManager, "./assets/resources.json");
-	g_ResourceManager.AddFontSpriteFromPath("dogica-8", 8, "./assets/dogica/TTF/dogicapixelbold.ttf");
-	g_ResourceManager.AddFontSpriteFromPath("dogica-24", 24, "./assets/dogica/TTF/dogicapixelbold.ttf");
-
     g_UI = new gueepo::UIManager(640, 360);
-
-    gueepo::FontSprite* dogicaSmall = g_ResourceManager.GetFontSprite("dogica-8");
-    gueepo::FontSprite* dogica = g_ResourceManager.GetFontSprite("dogica-24");
+    gbln::Factory::LoadResourceFile(&g_ResourceManager, "./assets/resources.json");
+    gbln::Factory::LoadEntity(&g_GameWorld, &g_ResourceManager, "./assets/goblinEntity.json");
 
     // #todo: all these labels should go into a UI json file on the "Factory" class
-    gueepo::Label* copywrightText = new gueepo::Label("(c) gueepo", dogicaSmall);
+    gueepo::Label* copywrightText = new gueepo::Label("(c) gueepo", g_ResourceManager.GetFontSprite("dogica-8"));
     copywrightText->SetPosition(gueepo::math::vec2(0.0f, -165.0f));
     copywrightText->SetAlignment(gueepo::ALIGNMENT::CENTER);
     g_UI->Push(copywrightText);
 
-    gueepo::Label* goblinGameEngine = new gueepo::Label("The\nGoblin\nGame Engine", dogica);
+    gueepo::Label* goblinGameEngine = new gueepo::Label("The\nGoblin\nGame Engine", g_ResourceManager.GetFontSprite("dogica-24"));
     goblinGameEngine->SetPosition(gueepo::math::vec2(-20.0f, 30.0f));
     g_UI->Push(goblinGameEngine);
-
-    // #todo: the creation of entities should move to a .json file on the "Factory" class
-    gbln::Entity* goblinKing = g_GameWorld.AddEntity("Goblin King");
-    goblinKing->AddComponent<gbln::Transform>(gueepo::math::vec2(-100.0f, 0.0f), .0f, gueepo::math::vec2(-6.0f, 6.0f));
-    goblinKing->AddComponent<gbln::Sprite>(g_ResourceManager.GetTexture("the_goblin_king"));
-    goblinKing->AddComponent<gbln::LuaComponent>("./assets/test.lua");
 
     g_GameWorld.BeginPlay();
 }

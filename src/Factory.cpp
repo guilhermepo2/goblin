@@ -1,5 +1,9 @@
 #include "Factory.h"
 
+#include "Transform.h"
+#include "Sprite.h"
+#include "LuaComponent.h"
+
 namespace gbln {
 
     bool Factory::LoadResourceFile(ResourceManager *rm, gueepo::string filepath) {
@@ -22,6 +26,25 @@ namespace gbln {
                     tempObject.GetString("id", textureId);
                     tempObject.GetString("path", texturePath);
                     rm->AddTexture(textureId.c_str(), texturePath.c_str());
+                }
+            }
+        }
+
+        // (2) Loading Fonts
+        gueepo::json fontsObject;
+        resourcesFile.GetArray("fonts", fontsObject);
+        if(fontsObject.IsArray()) {
+            for(int i = 0; i < fontsObject.GetArraySize(); i++) {
+                gueepo::json tempObject;
+                fontsObject.GetObjectInArray(i, tempObject);
+                if(tempObject.IsValid()) {
+                    std::string fontId;
+                    int fontSize;
+                    std::string fontPath;
+                    tempObject.GetString("id", fontId);
+                    tempObject.GetInt("fontSize", fontSize);
+                    tempObject.GetString("path", fontPath);
+                    rm->AddFontSpriteFromPath(fontId.c_str(), fontSize, fontPath.c_str());
                 }
             }
         }
@@ -82,7 +105,50 @@ namespace gbln {
         return false;
     }
 
-    bool Factory::LoadEntity(gueepo::string filepath) {
-        return false;
+    gbln::Entity *Factory::LoadEntity(GameWorld *gm, ResourceManager* rm, gueepo::string filepath) {
+        gueepo::json entityObject(filepath.c_str());
+
+        if(!entityObject.IsValid()) {
+            return nullptr;
+        }
+
+        std::string entityName;
+        entityObject.GetString("name", entityName);
+        gbln::Entity* entity = gm->AddEntity(entityName);
+
+        gueepo::json componentsObject;
+        entityObject.GetArray("components", componentsObject);
+        if(componentsObject.IsArray()) {
+            for(int i = 0; i < componentsObject.GetArraySize(); i++) {
+                gueepo::json component;
+                gueepo::json properties;
+
+                componentsObject.GetObjectInArray(i, component);
+                component.GetJsonObject("properties", properties);
+
+                std::string componentType;
+                component.GetString("type", componentType);
+
+                if(componentType == "transform") {
+                    int x, y, rot, scale_x, scale_y;
+                    properties.GetInt("x", x);
+                    properties.GetInt("y", y);
+                    properties.GetInt("rotation", rot);
+                    properties.GetInt("scale_x", scale_x);
+                    properties.GetInt("scale_y", scale_y);
+                    entity->AddComponent<Transform>(gueepo::math::vec2(x, y), rot, gueepo::math::vec2(scale_x, scale_y));
+                } else if(componentType == "sprite") {
+                    std::string textureId;
+                    properties.GetString("textureId", textureId);
+                    entity->AddComponent<Sprite>(rm->GetTexture(textureId));
+                } else if(componentType == "lua") {
+                    std::string path;
+                    properties.GetString("path", path);
+                    entity->AddComponent<LuaComponent>(path.c_str());
+                }
+            }
+        }
+
+        return entity;
     }
 }
