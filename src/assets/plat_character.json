@@ -1,0 +1,42 @@
+{
+    "name": "plat_character",
+    "components": [
+      {
+        "type": "transform",
+        "properties": {
+          "x": 0,
+          "y": 0,
+          "rotation": 0,
+          "scale_x": 2,
+          "scale_y": 2
+        }
+      },
+      {
+        "type": "sprite",
+        "properties": {
+          "textureRegionId": "character_blue_1"
+        }
+      },
+      {
+        "type": "sprite_animation",
+        "properties": {
+            "frames": [
+                {
+                    "textureRegionId": "character_blue_1",
+                    "timeOnFrame": 100
+                },
+                {
+                    "textureRegionId": "character_blue_2",
+                    "timeOnFrame": 110
+                }
+            ]
+        }
+      },
+      {
+        "type": "lua",
+        "properties": {
+          "path": "./assets/test.lua"
+        }
+      }
+    ]
+  }

@@ -29,5 +29,7 @@ namespace gbln {
         // #todo: load scene (just a bunch of entities?)
         // #todo load entire UI Screen (just a bunch of UI elements?)
 
+    private:
+        static bool LoadTextureRegions(ResourceManager* rm, gueepo::json textureAtlasObject);
     };
 }

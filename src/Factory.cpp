@@ -2,6 +2,7 @@
 
 #include "Transform.h"
 #include "Sprite.h"
+#include "SpriteAnimation.h"
 #include "LuaComponent.h"
 
 namespace gbln {
@@ -30,7 +31,20 @@ namespace gbln {
             }
         }
 
-        // (2) Loading Fonts
+        // (2) Loading Texture Regions
+        gueepo::json textureRegionsObject;
+        resourcesFile.GetArray("textureRegions", textureRegionsObject);
+        if (textureRegionsObject.IsArray()) {
+            for (int i = 0; i < textureRegionsObject.GetArraySize(); i++) {
+                gueepo::json textureAtlasObject;
+                textureRegionsObject.GetObjectInArray(i, textureAtlasObject);
+                gueepo::json internalTextureAtlasObject;
+                textureAtlasObject.GetJsonObject("TextureAtlas", internalTextureAtlasObject);
+                LoadTextureRegions(rm, internalTextureAtlasObject);
+            }
+        }
+
+        // (3) Loading Fonts
         gueepo::json fontsObject;
         resourcesFile.GetArray("fonts", fontsObject);
         if(fontsObject.IsArray()) {
@@ -61,47 +75,52 @@ namespace gbln {
 
         gueepo::json internalTextureAtlasJson;
         textureAtlasObject.GetJsonObject("TextureAtlas", internalTextureAtlasJson);
-        std::string textureName;
-        std::string texturePath;
-        internalTextureAtlasJson.GetString("textureName", textureName);
-        internalTextureAtlasJson.GetString("texturePath", texturePath);
-        gueepo::Texture* textureAtlas = nullptr;
-        if(!rm->ContainsTexture(textureName)) {
-            rm->AddTexture(textureName.c_str(), texturePath.c_str());
-        }
-        textureAtlas = rm->GetTexture(textureName);
-
-        // here is the issue. the spritesheet maps as (0,0) being bottom left
-        // but the engine loads as (0,0) being the bottom right
-        // so we have to convert the y.
-        // if y = 0 -> y = textureHeight - spriteHeight
-        // if = textureHeight - spriteHeight => y = 0
-        // so... y = (textureHeight - spriteHeight) - oldY ? I think that makes sense.
-        int textureHeight = textureAtlas->GetHeight();
-
-        gueepo::json textureRegionsArray;
-        internalTextureAtlasJson.GetArray("SubTextures", textureRegionsArray);
-        if(textureRegionsArray.IsArray()) {
-            for(int i = 0; i < textureRegionsArray.GetArraySize(); i++) {
-                gueepo::json textureRegion;
-                textureRegionsArray.GetObjectInArray(i, textureRegion);
-
-                std::string name;
-                int x, y, width, height;
-                textureRegion.GetString("_name", name);
-                textureRegion.GetInt("_x", x);
-                textureRegion.GetInt("_y", y);
-                textureRegion.GetInt("_width", width);
-                textureRegion.GetInt("_height", height);
-                gueepo::TextureRegion* texReg = new gueepo::TextureRegion(textureAtlas, x, (textureHeight - height) - y, width, height);
-                rm->AddTextureRegion(name.c_str(), texReg);
-            }
-        }
-
-        return true;
+        return LoadTextureRegions(rm, internalTextureAtlasJson);
     }
 
-    bool Factory::LoadUIElement(gueepo::UIManager* um, ResourceManager* rm, gueepo::string filepath) {
+	bool Factory::LoadTextureRegions(ResourceManager* rm, gueepo::json textureAtlasObject) {
+		std::string textureName;
+		std::string texturePath;
+        textureAtlasObject.GetString("textureName", textureName);
+        textureAtlasObject.GetString("texturePath", texturePath);
+
+		gueepo::Texture* textureAtlas = nullptr;
+		if (!rm->ContainsTexture(textureName)) {
+			rm->AddTexture(textureName.c_str(), texturePath.c_str());
+		}
+		textureAtlas = rm->GetTexture(textureName);
+
+		// here is the issue. the spritesheet maps as (0,0) being bottom left
+		// but the engine loads as (0,0) being the bottom right
+		// so we have to convert the y.
+		// if y = 0 -> y = textureHeight - spriteHeight
+		// if = textureHeight - spriteHeight => y = 0
+		// so... y = (textureHeight - spriteHeight) - oldY ? I think that makes sense.
+		int textureHeight = textureAtlas->GetHeight();
+
+		gueepo::json textureRegionsArray;
+        textureAtlasObject.GetArray("SubTextures", textureRegionsArray);
+		if (textureRegionsArray.IsArray()) {
+			for (int i = 0; i < textureRegionsArray.GetArraySize(); i++) {
+				gueepo::json textureRegion;
+				textureRegionsArray.GetObjectInArray(i, textureRegion);
+
+				std::string name;
+				int x, y, width, height;
+				textureRegion.GetString("_name", name);
+				textureRegion.GetInt("_x", x);
+				textureRegion.GetInt("_y", y);
+				textureRegion.GetInt("_width", width);
+				textureRegion.GetInt("_height", height);
+				gueepo::TextureRegion* texReg = new gueepo::TextureRegion(textureAtlas, x, (textureHeight - height) - y, width, height);
+				rm->AddTextureRegion(name.c_str(), texReg);
+			}
+		}
+
+		return true;
+	}
+
+	bool Factory::LoadUIElement(gueepo::UIManager* um, ResourceManager* rm, gueepo::string filepath) {
         gueepo::json uiObject(filepath.c_str());
 
         if(!uiObject.IsValid()) {
@@ -176,12 +195,37 @@ namespace gbln {
                     entity->AddComponent<Transform>(gueepo::math::vec2(x, y), rot, gueepo::math::vec2(scale_x, scale_y));
                 } else if(componentType == "sprite") {
                     std::string textureId;
-                    properties.GetString("textureId", textureId);
-                    entity->AddComponent<Sprite>(rm->GetTexture(textureId));
+                    if (properties.GetString("textureId", textureId)) {
+                        entity->AddComponent<Sprite>(rm->GetTexture(textureId));
+                    }
+                    else if (properties.GetString("textureRegionId", textureId)) {
+                        Sprite* spr = entity->AddComponent<Sprite>();
+                        spr->SetSprite(rm->GetTextureRegion(textureId));
+                    }
                 } else if(componentType == "lua") {
                     std::string path;
                     properties.GetString("path", path);
                     entity->AddComponent<LuaComponent>(path.c_str());
+                }
+                else if (componentType == "sprite_animation") {
+                    SpriteAnimation* spriteAnimation = entity->AddComponent<SpriteAnimation>();
+
+                    gueepo::json framesObject;
+                    properties.GetArray("frames", framesObject);
+                    if (framesObject.IsArray()) {
+                        for (int i = 0; i < framesObject.GetArraySize(); i++) {
+                            gueepo::json singleFrame;
+                            framesObject.GetObjectInArray(i, singleFrame);
+                            std::string textureRegionId;
+                            int timeOnFrame;
+
+                            singleFrame.GetString("textureRegionId", textureRegionId);
+                            singleFrame.GetInt("timeOnFrame", timeOnFrame);
+
+                            float timeOnFrameInS = static_cast<float>(timeOnFrame / 1000.0f);
+                            spriteAnimation->AddAnimationFrame(rm->GetTextureRegion(textureRegionId), timeOnFrameInS);
+                        }
+                    }
                 }
             }
         }

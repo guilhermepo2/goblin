@@ -10,13 +10,34 @@ struct INITIALIZATION_OPTIONS {
     std::string title;
     int width;
     int height;
+
+    int cameraWidth;
+    int cameraHeight;
+
+    int uiWidth;
+    int uiHeight;
 };
 
 class GoblinApplication : public gueepo::Application {
 public:
-    //
-	GoblinApplication() : Application("Goblin Game Engine", 640, 360) {}
-    GoblinApplication(const INITIALIZATION_OPTIONS& init) : Application(init.title, init.width, init.height) {}
+	GoblinApplication() : Application("Goblin Game Engine", 640, 360) {
+        m_windowTitle = "Goblin Game Engine";
+        m_windowWidth = m_cameraWidth = m_uiWidth = 640;
+        m_windowHeight = m_cameraHeight = m_uiHeight = 360;
+    }
+
+    GoblinApplication(const INITIALIZATION_OPTIONS& init) : Application(init.title, init.width, init.height) {
+        m_windowTitle = init.title.c_str();
+        m_windowWidth = init.width;
+        m_windowHeight = init.height;
+
+        m_cameraWidth = init.cameraWidth;
+        m_cameraHeight = init.cameraHeight;
+
+        m_uiWidth = init.uiWidth;
+        m_uiHeight = init.uiHeight;
+    }
+
 	~GoblinApplication() {}
 
     void Application_OnInitialize() override;
@@ -26,16 +47,20 @@ public:
     void Application_OnRender() override;
 
 private:
-    gueepo::OrtographicCamera* m_camera;
+    gueepo::OrtographicCamera* m_camera = nullptr;
+    gueepo::string m_windowTitle;
+    int m_windowWidth = 0, m_windowHeight = 0;
+    int m_cameraWidth = 0, m_cameraHeight = 0;
+    int m_uiWidth = 0, m_uiHeight= 0;
 };
 
 void GoblinApplication::Application_OnInitialize() {
-    m_camera = new gueepo::OrtographicCamera(640, 360);
-
-    g_UI = new gueepo::UIManager(640, 360);
+    m_camera = new gueepo::OrtographicCamera(m_cameraWidth, m_cameraHeight);
+    g_UI = new gueepo::UIManager(m_uiWidth, m_uiHeight);
+    
     gbln::Factory::LoadResourceFile(&g_ResourceManager, "./assets/resources.json");
-    gbln::Factory::LoadEntity(&g_GameWorld, &g_ResourceManager, "./assets/goblinEntity.json");
-    gbln::Factory::LoadUIElement(g_UI, &g_ResourceManager, "./assets/UISample.json");
+    gbln::Factory::LoadEntity(&g_GameWorld, &g_ResourceManager, "./assets/plat_character.json");
+    // gbln::Factory::LoadUIElement(g_UI, &g_ResourceManager, "./assets/UISample.json");
 
     g_GameWorld.BeginPlay();
 }
@@ -56,7 +81,7 @@ void GoblinApplication::Application_OnUpdate(float DeltaTime) {
 
 void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::BeginFrame(*m_camera);
-    gueepo::Renderer::Clear(0.1f, 0.6f, 0.1f, 1.0f);
+    gueepo::Renderer::Clear(0.1f, 0.3f, 0.6f, 1.0f);
 
     g_GameWorld.Render();
     g_UI->Render();
@@ -72,6 +97,12 @@ gueepo::Application* gueepo::CreateApplication() {
         configOptions.GetString("title", options.title);
         configOptions.GetInt("width", options.width);
         configOptions.GetInt("height", options.height);
+
+		configOptions.GetInt("width", options.cameraWidth);
+		configOptions.GetInt("height", options.cameraHeight);
+
+		configOptions.GetInt("width", options.uiWidth);
+		configOptions.GetInt("height", options.uiHeight);
         return new GoblinApplication(options);
     } else {
         return new GoblinApplication();

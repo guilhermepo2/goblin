@@ -1,5 +1,11 @@
 {
   "title": "THE GOBLIN GAME ENGINE",
   "width": 640,
-  "height": 360
+  "height": 360,
+
+  "camera_width": 640,
+  "camera_height": 360,
+
+  "ui_width": 640,
+  "ui_height": 360
 }
