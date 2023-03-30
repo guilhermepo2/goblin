@@ -1,0 +1,17 @@
+{
+  "labels": [
+    {
+      "text": "(c) gueepo",
+      "fontSpriteId": "dogica-8",
+      "x": 0,
+      "y": -165,
+      "alignment": "center"
+    },
+    {
+      "text": "The\nGoblin\nGame Engine",
+      "fontSpriteId": "dogica-24",
+      "x": -20,
+      "y": 30
+    }
+  ]
+}

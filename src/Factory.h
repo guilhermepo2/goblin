@@ -23,7 +23,7 @@ namespace gbln {
         // "_name" (string), "_x" (int), "_y" (int), "_width" (int), "_height" (int)
         static bool LoadTextureRegions(ResourceManager* rm, gueepo::string filepath);
 
-        static bool LoadUIElement(gueepo::string filepath);
+        static bool LoadUIElement(gueepo::UIManager* um, ResourceManager* rm, gueepo::string filepath);
         static gbln::Entity* LoadEntity(GameWorld* gm, ResourceManager* rm, gueepo::string filepath);
 
         // #todo: load scene (just a bunch of entities?)

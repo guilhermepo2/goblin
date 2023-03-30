@@ -101,8 +101,45 @@ namespace gbln {
         return true;
     }
 
-    bool Factory::LoadUIElement(gueepo::string filepath) {
-        return false;
+    bool Factory::LoadUIElement(gueepo::UIManager* um, ResourceManager* rm, gueepo::string filepath) {
+        gueepo::json uiObject(filepath.c_str());
+
+        if(!uiObject.IsValid()) {
+            return false;
+        }
+
+        gueepo::json labels;
+        uiObject.GetArray("labels", labels);
+        if(labels.IsArray()) {
+            for(int i = 0; i < labels.GetArraySize(); i++) {
+                gueepo::json label;
+                labels.GetObjectInArray(i, label);
+                std::string text, fontSpriteId;
+                int x, y;
+                label.GetString("text", text);
+                label.GetString("fontSpriteId", fontSpriteId);
+                label.GetInt("x", x);
+                label.GetInt("y", y);
+
+                gueepo::Label* uiLabel = new gueepo::Label(text.c_str(), rm->GetFontSprite(fontSpriteId));
+                uiLabel->SetPosition(gueepo::math::vec2(x, y));
+
+                std::string alignment;
+                if(label.GetString("alignment", alignment)) {
+                    if(alignment == "center") {
+                        uiLabel->SetAlignment(gueepo::ALIGNMENT::CENTER);
+                    } else if(alignment == "left") {
+                        uiLabel->SetAlignment(gueepo::ALIGNMENT::LEFT);
+                    } else if(alignment == "right") {
+                        uiLabel->SetAlignment(gueepo::ALIGNMENT::RIGHT);
+                    }
+                }
+
+                um->Push(uiLabel);
+            }
+        }
+
+        return true;
     }
 
     gbln::Entity *Factory::LoadEntity(GameWorld *gm, ResourceManager* rm, gueepo::string filepath) {

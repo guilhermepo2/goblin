@@ -35,16 +35,7 @@ void GoblinApplication::Application_OnInitialize() {
     g_UI = new gueepo::UIManager(640, 360);
     gbln::Factory::LoadResourceFile(&g_ResourceManager, "./assets/resources.json");
     gbln::Factory::LoadEntity(&g_GameWorld, &g_ResourceManager, "./assets/goblinEntity.json");
-
-    // #todo: all these labels should go into a UI json file on the "Factory" class
-    gueepo::Label* copywrightText = new gueepo::Label("(c) gueepo", g_ResourceManager.GetFontSprite("dogica-8"));
-    copywrightText->SetPosition(gueepo::math::vec2(0.0f, -165.0f));
-    copywrightText->SetAlignment(gueepo::ALIGNMENT::CENTER);
-    g_UI->Push(copywrightText);
-
-    gueepo::Label* goblinGameEngine = new gueepo::Label("The\nGoblin\nGame Engine", g_ResourceManager.GetFontSprite("dogica-24"));
-    goblinGameEngine->SetPosition(gueepo::math::vec2(-20.0f, 30.0f));
-    g_UI->Push(goblinGameEngine);
+    gbln::Factory::LoadUIElement(g_UI, &g_ResourceManager, "./assets/UISample.json");
 
     g_GameWorld.BeginPlay();
 }
