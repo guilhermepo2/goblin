@@ -5,6 +5,7 @@
 static gbln::ResourceManager g_ResourceManager;
 static gbln::GameWorld g_GameWorld;
 static gueepo::UIManager* g_UI;
+static gueepo::Tilemap* skiTilemap = nullptr;
 
 struct INITIALIZATION_OPTIONS {
     std::string title;
@@ -59,7 +60,9 @@ void GoblinApplication::Application_OnInitialize() {
     g_UI = new gueepo::UIManager(m_uiWidth, m_uiHeight);
     
     gbln::Factory::LoadResourceFile(&g_ResourceManager, "./assets/resources.json");
-    gbln::Factory::LoadEntity(&g_GameWorld, &g_ResourceManager, "./assets/plat_character.json");
+    gueepo::Texture* tinySkiTilemap = g_ResourceManager.GetTexture("kenney_tiny_ski");
+    skiTilemap = gbln::Factory::CreateTilemapFromFile(tinySkiTilemap, "./assets/gameplay_map.json");
+    gbln::Factory::LoadEntity(&g_GameWorld, &g_ResourceManager, "./assets/ski_char_entity.json");
     // gbln::Factory::LoadUIElement(g_UI, &g_ResourceManager, "./assets/UISample.json");
 
     g_GameWorld.BeginPlay();
@@ -82,6 +85,21 @@ void GoblinApplication::Application_OnUpdate(float DeltaTime) {
 void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::BeginFrame(*m_camera);
     gueepo::Renderer::Clear(0.1f, 0.3f, 0.6f, 1.0f);
+
+    // Drawing the tilemap (visualization purposes)
+    for (int i = 0; i < skiTilemap->GetNumberOfLayers(); i++) {
+        gueepo::TilemapLayer* layer = skiTilemap->GetLayer(i);
+
+        for (int j = 0; j < layer->data.size(); j++) {
+            gueepo::Renderer::Draw(
+                layer->data[j]->texture,
+                ((layer->data[j]->x * skiTilemap->GetTileWidth()) * 2) - 285,
+                (layer->data[j]->y * skiTilemap->GetTileHeight()) * 2 - 165,
+				(skiTilemap->GetTileWidth()) * 2,
+				(skiTilemap->GetTileHeight()) * 2
+            );
+        }
+    }
 
     g_GameWorld.Render();
     g_UI->Render();

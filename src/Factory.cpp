@@ -7,6 +7,7 @@
 
 namespace gbln {
 
+    // *************************************************************************************************************
     bool Factory::LoadResourceFile(ResourceManager *rm, gueepo::string filepath) {
         gueepo::json resourcesFile(filepath.c_str());
 
@@ -66,6 +67,7 @@ namespace gbln {
         return true;
     }
 
+    // *************************************************************************************************************
     bool Factory::LoadTextureRegions(ResourceManager *rm, gueepo::string filepath) {
         gueepo::json textureAtlasObject(filepath.c_str());
 
@@ -78,6 +80,7 @@ namespace gbln {
         return LoadTextureRegions(rm, internalTextureAtlasJson);
     }
 
+    // *************************************************************************************************************
 	bool Factory::LoadTextureRegions(ResourceManager* rm, gueepo::json textureAtlasObject) {
 		std::string textureName;
 		std::string texturePath;
@@ -120,6 +123,7 @@ namespace gbln {
 		return true;
 	}
 
+    // *************************************************************************************************************
 	bool Factory::LoadUIElement(gueepo::UIManager* um, ResourceManager* rm, gueepo::string filepath) {
         gueepo::json uiObject(filepath.c_str());
 
@@ -161,6 +165,7 @@ namespace gbln {
         return true;
     }
 
+    // *************************************************************************************************************
     gbln::Entity *Factory::LoadEntity(GameWorld *gm, ResourceManager* rm, gueepo::string filepath) {
         gueepo::json entityObject(filepath.c_str());
 
@@ -232,4 +237,88 @@ namespace gbln {
 
         return entity;
     }
+
+    // *************************************************************************************************************
+	gueepo::Tilemap* Factory::CreateTilemapFromFile(gueepo::Texture* tilemapTexture, gueepo::string filepath) {
+        gueepo::json tilemapObject(filepath.c_str());
+
+        if (!tilemapObject.IsValid()) {
+            LOG_ERROR("error opening tilemap file: {0}", filepath);
+            return nullptr;
+        }
+
+        gueepo::TILEMAP_PARAMS tilemapParams;
+		tilemapObject.GetInt("width", tilemapParams.width);
+		tilemapObject.GetInt("height", tilemapParams.height);
+		tilemapObject.GetInt("tilewidth", tilemapParams.tileWidth);
+		tilemapObject.GetInt("tileheight", tilemapParams.tileHeight);
+		gueepo::Tilemap* tilemap = new gueepo::Tilemap(tilemapParams);
+
+        // iterating through all layers...
+        gueepo::json layersJsonArray;
+        tilemapObject.GetArray("layers", layersJsonArray);
+        if (layersJsonArray.IsArray()) {
+            for (int i = 0; i < layersJsonArray.GetArraySize(); i++) {
+                gueepo::json currentLayerObject;
+                layersJsonArray.GetObjectInArray(i, currentLayerObject);
+
+				bool visible;
+				currentLayerObject.GetBool("visible", visible);
+				if (!visible) {
+					continue;
+				}
+
+                gueepo::TilemapLayer* tilemapLayer = new gueepo::TilemapLayer();
+				std::string layerName;
+				currentLayerObject.GetString("name", layerName);
+				tilemapLayer->layerName = layerName.c_str();
+
+				// Here we do the regular visual processing of the tilemap...
+				// Getting the data (the hard part)
+                gueepo::json dataArrayObject;
+                currentLayerObject.GetArray("data", dataArrayObject);
+                if (dataArrayObject.IsArray()) {
+                    for (int i = 0; i < dataArrayObject.GetArraySize(); i++) {
+                        int contentInteger;
+                        dataArrayObject.GetIntAt(i, contentInteger);
+
+                        if (contentInteger == 0) {
+                            continue;
+                        }
+
+						// ok... now we have the tile number, we have to translate that into texture region...
+						// for example... id 0 means (0,0)
+						// whereas...	  id 81 means (1, 4) => and the actual (x, y) on the texture is (16, 64), and size is (16,16)
+						// so the formula is... (id % width, id / width)
+						contentInteger--;
+						int tile_x = contentInteger % tilemap->GetWidth();
+						int tile_y = contentInteger / tilemap->GetWidth();
+						int tileWidth = tilemap->GetTileWidth();
+						int tileHeight = tilemap->GetTileHeight();
+						int textureRegionX = tile_x * tileWidth;
+                        int textureRegionY = tilemapTexture->GetHeight() - ((tile_y + 1) * tileHeight);
+
+                        // #todo: keep track of all the texture regions, so we don't recreate if they are the same ?!
+                        // #todo: Sounds like it would be the work of a "tilemap" resource, not a tilemap... Hm... a SpriteSheet? a TextureAtlas?
+                        gueepo::TextureRegion* texReg = new gueepo::TextureRegion(tilemapTexture, textureRegionX, textureRegionY, tileWidth, tileHeight);
+                        int tilePositionX = i % tilemap->GetWidth();
+						// having to invert the Y because we are from the top left on the tilemap
+						// so we also have to start pushing on the top left (which is the highest Y)
+						int tilePositionY = tilemap->GetHeight() - (i / tilemap->GetWidth());
+						gueepo::Tile* tile = new gueepo::Tile();
+                        tile->x = tilePositionX;
+                        tile->y = tilePositionY;
+						tile->texture = texReg;
+
+                        tilemapLayer->data.add(tile);
+                    } // for (int i = 0; i < dataArrayObject.GetArraySize(); i++)
+                } // if (dataArrayObject.IsArray())
+
+                tilemap->AddLayer(tilemapLayer);
+            } // for (int i = 0; i < layersJsonArray.GetArraySize(); i++)
+        } // if (layersJsonArray.IsArray())
+
+        return tilemap;
+	}
+
 }

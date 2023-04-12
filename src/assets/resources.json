@@ -25,70 +25,30 @@
       "path": "./assets/goblins/lofi-goblins.png"
     },
     {
-      "id": "kenney_characters",
-      "path": "./assets/kenney-pixel-plat/characters_packed.png"
-    },
-    {
-      "id": "kenney_tiles",
-      "path": "./assets/kenney-pixel-plat/tiles_packed.png"
-    },
-    {
-      "id": "kenney_background",
-      "path": "./assets/kenney-pixel-plat/tilemap_packed.png"
+      "id": "kenney_tiny_ski",
+      "path": "./assets/kenney_tiny_ski/Tilemap/tilemap_packed.png"
     }
   ],
   "textureRegions": [
     {
       "TextureAtlas": {
-        "textureName": "kenney_characters",
-        "texturePath": "./assets/kenney-pixel-plat/characters_packed.png",
+        "textureName": "kenney_tiny_ski",
+        "texturePath": "./assets/kenney_tiny_ski/Tilemap/tilemap_packed.png",
         "SubTextures": [
           {
             "_name": "character_green_1",
-            "_x": 0,
-            "_y": 0,
-            "_width": 24,
-            "_height": 24
+            "_x": 160,
+            "_y": 80,
+            "_width": 16,
+            "_height": 16
           },
           {
             "_name": "character_green_2",
-            "_x": 24,
-            "_y": 0,
-            "_width": 24,
-            "_height": 24
-          },
-          {
-            "_name": "character_blue_1",
-            "_x": 48,
-            "_y": 0,
-            "_width": 24,
-            "_height": 24
-          },
-          {
-            "_name": "character_blue_2",
-            "_x": 72,
-            "_y": 0,
-            "_width": 24,
-            "_height": 24
+            "_x": 176,
+            "_y": 80,
+            "_width": 16,
+            "_height": 16
           }
-        ]
-      }
-    },
-    {
-      "TextureAtlas": {
-        "textureName": "kenney_tiles",
-        "texturePath": "./assets/kenney-pixel-plat/tiles_packed.png",
-        "SubTextures": [
-          
-        ]
-      }
-    },
-    {
-      "TextureAtlas": {
-        "textureName": "kenney_background",
-        "texturePath": "./assets/kenney-pixel-plat/tilemap_packed.png",
-        "SubTextures": [
-          
         ]
       }
     }

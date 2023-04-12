@@ -27,6 +27,17 @@ void gbln::LuaComponent::BeginPlay() {
 }
 
 
+bool gbln::LuaComponent::ProcessInput(const gueepo::InputState& CurrentInputState) {
+    lua_getglobal(m_internalState, "ProcessInput");
+    if (lua_isfunction(m_internalState, -1)) {
+        lua_pushlightuserdata(m_internalState, owner);
+        // todo: build a struct with the inputs... how?
+        lua_pcall(m_internalState, 1, 0, 0);
+    }
+
+    return false;
+}
+
 void gbln::LuaComponent::Update(float DeltaTime) {
     lua_getglobal(m_internalState, "Update");
     if(lua_isfunction(m_internalState, -1)) {

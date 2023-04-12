@@ -1,20 +1,20 @@
 {
-    "name": "plat_character",
+    "name": "skier",
     "components": [
       {
         "type": "transform",
         "properties": {
           "x": 0,
-          "y": 0,
+          "y": 100,
           "rotation": 0,
-          "scale_x": 2,
-          "scale_y": 2
+          "scale_x": 3,
+          "scale_y": 3
         }
       },
       {
         "type": "sprite",
         "properties": {
-          "textureRegionId": "character_blue_1"
+          "textureRegionId": "character_green_1"
         }
       },
       {
@@ -22,12 +22,12 @@
         "properties": {
             "frames": [
                 {
-                    "textureRegionId": "character_blue_1",
+                    "textureRegionId": "character_green_1",
                     "timeOnFrame": 100
                 },
                 {
-                    "textureRegionId": "character_blue_2",
-                    "timeOnFrame": 110
+                    "textureRegionId": "character_green_2",
+                    "timeOnFrame": 400
                 }
             ]
         }
@@ -35,7 +35,7 @@
       {
         "type": "lua",
         "properties": {
-          "path": "./assets/test.lua"
+          "path": "./assets/ski_entity.lua"
         }
       }
     ]

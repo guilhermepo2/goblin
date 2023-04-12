@@ -29,6 +29,9 @@ namespace gbln {
         // #todo: load scene (just a bunch of entities?)
         // #todo load entire UI Screen (just a bunch of UI elements?)
 
+        // Loading a Tilemap...I don't like how it receives a texture!
+        static gueepo::Tilemap* CreateTilemapFromFile(gueepo::Texture* tilemapTexture, gueepo::string filepath);
+
     private:
         static bool LoadTextureRegions(ResourceManager* rm, gueepo::json textureAtlasObject);
     };

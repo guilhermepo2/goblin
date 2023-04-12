@@ -14,7 +14,7 @@ namespace gbln {
         ~LuaComponent() override;
         void Initialize() override;
         void BeginPlay() override;
-        // bool ProcessInput(const gueepo::InputState& CurrentInputState) override;
+        bool ProcessInput(const gueepo::InputState& CurrentInputState) override;
         void Update(float DeltaTime) override;
         // void Render() override; // is this ever going to be on Lua?
         void Destroy() override;
