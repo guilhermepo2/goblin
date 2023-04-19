@@ -3,6 +3,19 @@
 #include "Transform.h"
 #include "Entity.h"
 
+#define _CONCAT_STR(x,y) #x "_" #y
+#define CONCAT_STR(x,y) _CONCAT_STR(x,y)
+
+#define PUSH_BOOLEAN(keycode, keycode_str) \
+do { \
+lua_pushboolean(m_internalState, CurrentInputState.Keyboard.WasKeyPressedThisFrame(keycode)); \
+lua_setfield(m_internalState, -2, CONCAT_STR(keycode_str, pressed)); \
+lua_pushboolean(m_internalState, CurrentInputState.Keyboard.WasKeyReleasedThisFrame(keycode)); \
+lua_setfield(m_internalState, -2, CONCAT_STR(keycode_str, released)); \
+lua_pushboolean(m_internalState, CurrentInputState.Keyboard.IsKeyDown(keycode)); \
+lua_setfield(m_internalState, -2, CONCAT_STR(keycode_str, held)); \
+} while(false)
+
 gbln::LuaComponent::LuaComponent(const gueepo::string luaScript) {
     m_internalState = luaL_newstate();
     luaL_openlibs(m_internalState);
@@ -31,8 +44,15 @@ bool gbln::LuaComponent::ProcessInput(const gueepo::InputState& CurrentInputStat
     lua_getglobal(m_internalState, "ProcessInput");
     if (lua_isfunction(m_internalState, -1)) {
         lua_pushlightuserdata(m_internalState, owner);
-        // todo: build a struct with the inputs... how?
-        lua_pcall(m_internalState, 1, 0, 0);
+
+        lua_newtable(m_internalState);
+        PUSH_BOOLEAN(gueepo::Keycode::KEYCODE_A, a);
+        PUSH_BOOLEAN(gueepo::Keycode::KEYCODE_D, d);
+        PUSH_BOOLEAN(gueepo::Keycode::KEYCODE_W, w);
+        PUSH_BOOLEAN(gueepo::Keycode::KEYCODE_S, s);
+
+        lua_pcall(m_internalState, 2, 0, 0);
+        return true;
     }
 
     return false;
@@ -87,12 +107,18 @@ int lua_TransformTranslate(lua_State* L);
 int lua_SetRotation(lua_State* L);
 // float _GetRotation(Entity*)
 int lua_GetCurrentRotation(lua_State* L);
+// float _GetPositionX(Entity*)
+int lua_GetPositionX(lua_State* L);
+// float _GetPositionY(Entity*)
+int lua_GetPositionY(lua_State* L);
 
 void gbln::LuaComponent::BindScriptFunctions(lua_State *L) {
     lua_register(L, "_Log", lua_Log);
     lua_register(L, "_Move", lua_TransformTranslate);
     lua_register(L, "_SetRotation", lua_SetRotation);
     lua_register(L, "_GetRotation", lua_GetCurrentRotation);
+    lua_register(L, "_GetPositionX", lua_GetPositionX);
+    lua_register(L, "_GetPositionY", lua_GetPositionY);
 }
 
 int lua_Log(lua_State* L) {
@@ -138,4 +164,32 @@ int lua_GetCurrentRotation(lua_State* L) {
 
     lua_pushnumber(L, Rotation);
     return 1;
+}
+
+int lua_GetPositionX(lua_State* L) {
+	gbln::Entity* owner = static_cast<gbln::Entity*>(lua_touserdata(L, 1));
+	float positionX = 0.0f;
+
+	gbln::Transform* t = owner->GetComponentOfType<gbln::Transform>();
+
+	if (t != nullptr) {
+        positionX = t->position.x;
+	}
+
+	lua_pushnumber(L, positionX);
+	return 1;
+}
+
+int lua_GetPositionY(lua_State* L) {
+	gbln::Entity* owner = static_cast<gbln::Entity*>(lua_touserdata(L, 1));
+	float positionY = 0.0f;
+
+	gbln::Transform* t = owner->GetComponentOfType<gbln::Transform>();
+
+	if (t != nullptr) {
+        positionY = t->position.y;
+	}
+
+	lua_pushnumber(L, positionY);
+	return 1;
 }

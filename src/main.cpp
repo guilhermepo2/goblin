@@ -87,6 +87,7 @@ void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::Clear(0.1f, 0.3f, 0.6f, 1.0f);
 
     // Drawing the tilemap (visualization purposes)
+    // #this should be moved to a tilemap component?? how will that work?!
     for (int i = 0; i < skiTilemap->GetNumberOfLayers(); i++) {
         gueepo::TilemapLayer* layer = skiTilemap->GetLayer(i);
 
