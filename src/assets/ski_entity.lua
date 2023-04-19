@@ -38,7 +38,6 @@ function Update(self, dt)
     -- blocking velocity if we are out of boundaries
     x_pos = _GetPositionX(self)
     y_pos = _GetPositionY(self)
-    _Log(y_pos)
 
     if(x_pos > MAX_X and velocity_x > 0) then
         velocity_x = 0
