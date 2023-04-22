@@ -1,12 +1,19 @@
 #include "Game.h"
 static gueepo::Tilemap* skiTilemap = nullptr;
+static float playerScore = 0.0f;
 
 namespace gbln {
     
 	Game::Game() {}
 	Game::~Game() {}
 
+	void Game::Update(float deltaTime) {
+		playerScore += deltaTime;
+	}
+
 	void Game::LoadResources(ResourceManager* rm, GameWorld* gw) {
+		m_rm = rm;
+
 		gbln::Factory::LoadResourceFile(rm, "./assets/resources.json");
 		gueepo::Texture* tinySkiTilemap = rm->GetTexture("kenney_tiny_ski");
 		skiTilemap = gbln::Factory::CreateTilemapFromFile(tinySkiTilemap, "./assets/gameplay_map.json");
@@ -29,6 +36,13 @@ namespace gbln {
 				);
 			}
 		}
+
+		gueepo::FontSprite* dogica = m_rm->GetFontSprite("dogica-24");
+		std::string scoreString = std::to_string(playerScore);
+		gueepo::string scoreStringRounded = scoreString.substr(0, scoreString.find(".")+3).c_str();
+		float textWidth = dogica->GetWidthOf(scoreStringRounded);
+		gueepo::math::vec2 textPosition(300.0f - textWidth, 145.0f);
+		gueepo::Renderer::DrawString(dogica, scoreStringRounded, textPosition, 1.0f, gueepo::Color(0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
 }

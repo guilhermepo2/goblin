@@ -305,9 +305,7 @@ namespace gbln {
 						// having to invert the Y because we are from the top left on the tilemap
 						// so we also have to start pushing on the top left (which is the highest Y)
 						int tilePositionY = tilemap->GetHeight() - (i / tilemap->GetWidth());
-						gueepo::Tile* tile = new gueepo::Tile();
-                        tile->x = tilePositionX;
-                        tile->y = tilePositionY;
+						gueepo::Tile* tile = new gueepo::Tile(tilePositionX, tilePositionY);
 						tile->texture = texReg;
 
                         tilemapLayer->data.add(tile);

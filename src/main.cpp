@@ -4,8 +4,8 @@
 
 static gbln::ResourceManager g_ResourceManager;
 static gbln::GameWorld g_GameWorld;
-static gbln::Game* gameReference;
-static gueepo::UIManager* g_UI;
+static gbln::Game* gameReference = nullptr;
+static gueepo::UIManager* g_UI = nullptr;
 
 struct INITIALIZATION_OPTIONS {
     std::string title;
@@ -77,6 +77,8 @@ void GoblinApplication::Application_OnInput(const gueepo::InputState &currentInp
 void GoblinApplication::Application_OnUpdate(float DeltaTime) {
     g_GameWorld.Update(DeltaTime);
     g_UI->Update(DeltaTime);
+
+    gameReference->Update(DeltaTime);
 }
 
 void GoblinApplication::Application_OnRender() {
@@ -92,7 +94,10 @@ void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::EndFrame();
 }
 
-gueepo::Application* gueepo::CreateApplication() {
+gueepo::Application* gueepo::CreateApplication(int argc, char** argv) {
+    unref(argc);
+    unref(argv);
+
     gueepo::json configOptions("./assets/init.json");
 
     if(configOptions.IsValid()) {

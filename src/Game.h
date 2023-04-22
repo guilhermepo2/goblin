@@ -12,10 +12,12 @@ namespace gbln {
         Game();
         ~Game();
 
+        void Update(float deltaTime);
         void LoadResources(ResourceManager* rm, GameWorld* gw);
         void Render();
 
     protected:
+        ResourceManager* m_rm;
     private:
 
     };
