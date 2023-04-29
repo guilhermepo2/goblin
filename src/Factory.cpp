@@ -291,8 +291,10 @@ namespace gbln {
 						// whereas...	  id 81 means (1, 4) => and the actual (x, y) on the texture is (16, 64), and size is (16,16)
 						// so the formula is... (id % width, id / width)
 						contentInteger--;
-						int tile_x = contentInteger % tilemap->GetWidth();
-						int tile_y = contentInteger / tilemap->GetWidth();
+
+                        // tile x = contentInteger % (how many tilemaps in a row of the tilemap)
+                        int tile_x = contentInteger % (tilemapTexture->GetWidth() / tilemap->GetTileWidth());
+						int tile_y = contentInteger / (tilemapTexture->GetWidth() / tilemap->GetTileWidth());
 						int tileWidth = tilemap->GetTileWidth();
 						int tileHeight = tilemap->GetTileHeight();
 						int textureRegionX = tile_x * tileWidth;
