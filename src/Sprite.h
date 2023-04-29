@@ -31,7 +31,8 @@ namespace gbln {
                         transform->position.x,
                         transform->position.y,
                         sprite->GetWidth() * scale.x,
-                        sprite->GetHeight() * scale.y
+                        sprite->GetHeight() * scale.y,
+                        transform->rotation
                         );
             }
         }

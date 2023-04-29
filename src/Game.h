@@ -18,7 +18,7 @@ namespace gbln {
 
     protected:
         ResourceManager* m_rm;
-    private:
+        GameWorld* m_gw;
 
     };
 }

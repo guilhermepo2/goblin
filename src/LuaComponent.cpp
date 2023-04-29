@@ -111,6 +111,8 @@ int lua_GetCurrentRotation(lua_State* L);
 int lua_GetPositionX(lua_State* L);
 // float _GetPositionY(Entity*)
 int lua_GetPositionY(lua_State* L);
+// void _SetScale(Entity*, x, y)
+int lua_SetScale(lua_State* L);
 
 void gbln::LuaComponent::BindScriptFunctions(lua_State *L) {
     lua_register(L, "_Log", lua_Log);
@@ -119,6 +121,7 @@ void gbln::LuaComponent::BindScriptFunctions(lua_State *L) {
     lua_register(L, "_GetRotation", lua_GetCurrentRotation);
     lua_register(L, "_GetPositionX", lua_GetPositionX);
     lua_register(L, "_GetPositionY", lua_GetPositionY);
+    lua_register(L, "_SetScale", lua_SetScale);
 }
 
 int lua_Log(lua_State* L) {
@@ -192,4 +195,19 @@ int lua_GetPositionY(lua_State* L) {
 
 	lua_pushnumber(L, positionY);
 	return 1;
+}
+
+int lua_SetScale(lua_State* L) {
+    gbln::Entity* owner = static_cast<gbln::Entity*>(lua_touserdata(L, 1));
+    gbln::Transform* t = owner->GetComponentOfType<gbln::Transform>();
+
+    float scaleX = lua_tonumber(L, 2);
+    float scaleY = lua_tonumber(L, 3);
+
+    if (t != nullptr) {
+        t->scale.x = scaleX;
+        t->scale.y = scaleY;
+    }
+
+    return 0;
 }
