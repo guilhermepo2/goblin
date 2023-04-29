@@ -10,8 +10,8 @@ velocity_y = 0
 
 INITIAL_ROTATION = 0
 GOAL_ROTATION = 0
-START_SCALE_X = 2
-START_SCALE_Y = 2
+START_SCALE_X = 1.5
+START_SCALE_Y = 1.5
 
 function Initialize(self)
     INITIAL_ROTATION = _GetRotation(self)
@@ -102,9 +102,6 @@ function Update(self, dt)
     if(velocity_y < 0) then
         velocity_y = velocity_y + (SPEED * dt)
     end
-
-    current_y_pos = _GetPositionY(self)
-    _Log(current_y_pos)
 end
 
 function Destroy(self)
