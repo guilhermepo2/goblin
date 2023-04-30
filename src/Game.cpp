@@ -10,6 +10,26 @@ namespace gbln {
 
 	void Game::Update(float deltaTime) {
 		// playerScore += deltaTime;
+
+		// We want the camera to follow the player...
+		// So the camera position has to be the (player_x, player_y) - (half_x, half_y)
+		// 1. Get Player Reference
+		gbln::Entity* deliveryGuy = m_gw->GetEntityByName("deliveryguy");
+
+		if (deliveryGuy != nullptr) {
+			gueepo::math::vec3 cameraPosition = cameraReference->GetPosition();
+			LOG_INFO("camera position: ({0}, {1}, {2})", cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+			float halfWidth = cameraReference->GetSize().x / 2.0f;
+			float halfHeight = cameraReference->GetSize().y / 2.0f;
+			gueepo::math::vec2 playerPosition = deliveryGuy->GetComponentOfType<gbln::Transform>()->position;
+
+			// here's how the camera works...the camera maps the screen size in between -1 and 1 (so, 2)
+			// so if the camera is, let's say, 1.0 moved to the x it moved 320 pixels (if the screen is 640 pixels) to the x
+			cameraPosition.x = (playerPosition.x / halfWidth);
+			cameraPosition.y = (playerPosition.y / halfHeight);
+			cameraReference->SetPosition(cameraPosition);
+		}
 	}
 
 	void Game::LoadResources(ResourceManager* rm, GameWorld* gw) {

@@ -16,6 +16,8 @@ namespace gbln {
         void LoadResources(ResourceManager* rm, GameWorld* gw);
         void Render();
 
+        gueepo::OrtographicCamera* cameraReference;
+
     protected:
         ResourceManager* m_rm;
         GameWorld* m_gw;

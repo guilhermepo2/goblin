@@ -61,6 +61,7 @@ void GoblinApplication::Application_OnInitialize() {
 
     gameReference = new gbln::Game();
     gameReference->LoadResources(&g_ResourceManager, &g_GameWorld);
+    gameReference->cameraReference = m_camera;
 
     g_GameWorld.BeginPlay();
 }
