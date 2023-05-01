@@ -84,8 +84,13 @@ void GoblinApplication::Application_OnUpdate(float DeltaTime) {
 
 void GoblinApplication::Application_OnRender() {
     gueepo::Renderer::BeginFrame(*m_camera);
-    gueepo::Renderer::Clear(0.1f, 0.3f, 0.6f, 1.0f);
-
+    gueepo::Renderer::Clear(
+        (132.0f / 255.0f),
+        (198.0f / 255.0f),
+        (105.0f / 255.0f),
+        1.0f
+    );
+    
     // #todo: have a pre and post render?
     gameReference->Render();
 

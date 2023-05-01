@@ -240,6 +240,7 @@ namespace gbln {
 
     // *************************************************************************************************************
 	gueepo::Tilemap* Factory::CreateTilemapFromFile(gueepo::Texture* tilemapTexture, gueepo::string filepath) {
+
         gueepo::json tilemapObject(filepath.c_str());
 
         if (!tilemapObject.IsValid()) {
@@ -262,15 +263,17 @@ namespace gbln {
                 gueepo::json currentLayerObject;
                 layersJsonArray.GetObjectInArray(i, currentLayerObject);
 
+				std::string layerName;
+                currentLayerObject.GetString("name", layerName);
+
 				bool visible;
 				currentLayerObject.GetBool("visible", visible);
 				if (!visible) {
 					continue;
 				}
 
-                gueepo::TilemapLayer* tilemapLayer = new gueepo::TilemapLayer();
-				std::string layerName;
-				currentLayerObject.GetString("name", layerName);
+				
+				gueepo::TilemapLayer* tilemapLayer = new gueepo::TilemapLayer();
 				tilemapLayer->layerName = layerName.c_str();
 
 				// Here we do the regular visual processing of the tilemap...
