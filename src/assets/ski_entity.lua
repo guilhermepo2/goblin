@@ -1,9 +1,9 @@
 g_internal_rotation = 0
-SPEED = 50
+SPEED = 100
 
-MIN_Y = -105
-MAX_Y = 136
-MIN_X = -57
+MIN_Y = -155
+MAX_Y = 156
+MIN_X = -80
 MAX_X = 57
 
 velocity_x = 0

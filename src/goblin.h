@@ -12,3 +12,4 @@
 #include "Sprite.h"
 #include "LuaComponent.h"
 #include "SpriteAnimation.h"
+#include "TilemapComponent.h"

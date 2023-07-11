@@ -20,6 +20,7 @@ add_executable(${PROJECT_NAME}
         src/Transform.h
         src/Sprite.h
         src/LuaComponent.cpp src/LuaComponent.h
+        src/TilemapComponent.cpp src/TilemapComponent.h
         src/SpriteAnimation.cpp src/SpriteAnimation.h
         src/Factory.cpp src/Factory.h
         src/Game.h src/Game.cpp

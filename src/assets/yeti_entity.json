@@ -1,0 +1,36 @@
+{
+    "name": "yeti",
+    "components": [
+      {
+        "type": "transform",
+        "properties": {
+          "x": 0,
+          "y": 135,
+          "rotation": 0,
+          "scale_x": 3,
+          "scale_y": 3
+        }
+      },
+      {
+        "type": "sprite",
+        "properties": {
+          "textureRegionId": "yeti_1"
+        }
+      },
+      {
+        "type": "sprite_animation",
+        "properties": {
+            "frames": [
+                {
+                    "textureRegionId": "yeti_1",
+                    "timeOnFrame": 200
+                },
+                {
+                    "textureRegionId": "yeti_2",
+                    "timeOnFrame": 200
+                }
+            ]
+        }
+      }
+    ]
+  }

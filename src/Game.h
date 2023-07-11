@@ -12,6 +12,7 @@ namespace gbln {
         Game();
         ~Game();
 
+        void Begin();
         void Update(float deltaTime);
         void LoadResources(ResourceManager* rm, GameWorld* gw);
         void Render();

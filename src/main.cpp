@@ -63,6 +63,7 @@ void GoblinApplication::Application_OnInitialize() {
     gameReference->LoadResources(&g_ResourceManager, &g_GameWorld);
     gameReference->cameraReference = m_camera;
 
+    gameReference->Begin();
     g_GameWorld.BeginPlay();
 }
 
@@ -91,11 +92,12 @@ void GoblinApplication::Application_OnRender() {
         1.0f
     );
     
-    // #todo: have a pre and post render?
-    gameReference->Render();
 
     g_GameWorld.Render();
     g_UI->Render();
+
+    // #todo: have a pre and post render? why?
+    gameReference->Render();
 
     gueepo::Renderer::EndFrame();
 }
