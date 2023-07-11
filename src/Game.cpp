@@ -5,7 +5,6 @@ static float playerScore = 0;
 static float timeElapsed = 0.0f;
 static gbln::Entity* playerEntity = nullptr;
 static gbln::Entity* yetiEntity = nullptr;
-// // //
 
 namespace gbln {
     
@@ -46,7 +45,43 @@ namespace gbln {
 			gueepo::math::vec2(2.25f, 2.25f)
 		);
 		map->AddComponent<gbln::TilemapComponent>(skiTilemap);
+
+		// todo: create a sample obstacle that is going to be scrolled where the player cant reach!!
 		
+		gueepo::TextureRegion* treeSprite = rm->GetTextureRegion("tree_1");
+		
+		float starting_x = -320.0f;
+		for (int i = 0; i < 7; i++) {
+			gbln::Entity* tree = gw->AddEntity("tree");
+			tree->AddComponent<gbln::Transform>(
+				gueepo::math::vec2(starting_x, -160.0f),
+				0.0f,
+				gueepo::math::vec2(3.0f, 3.0f)
+			);
+
+			gbln::Sprite* spriteComp = tree->AddComponent<gbln::Sprite>();
+			spriteComp->SetSprite(treeSprite);
+			tree->AddComponent<gbln::EnvironmentItemComponent>();
+
+			starting_x += 32.0f;
+		}
+
+		starting_x = 80.0f;
+		for (int i = 0; i < 8; i++) {
+			gbln::Entity* tree = gw->AddEntity("tree");
+			tree->AddComponent<gbln::Transform>(
+				gueepo::math::vec2(starting_x, -160.0f),
+				0.0f,
+				gueepo::math::vec2(3.0f, 3.0f)
+			);
+
+			gbln::Sprite* spriteComp = tree->AddComponent<gbln::Sprite>();
+			spriteComp->SetSprite(treeSprite);
+			tree->AddComponent<gbln::EnvironmentItemComponent>();
+
+			starting_x += 32.0f;
+		}
+
 		gbln::Factory::LoadEntity(gw, rm, "./assets/ski_char_entity.json");
 		gbln::Factory::LoadEntity(gw, rm, "./assets/yeti_entity.json");
 	}

@@ -13,3 +13,4 @@
 #include "LuaComponent.h"
 #include "SpriteAnimation.h"
 #include "TilemapComponent.h"
+#include "EnvironmentItemComponent.h"
