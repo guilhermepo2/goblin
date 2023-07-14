@@ -1,26 +1,9 @@
+# RIP :(
+
+This "game engine" is no long being developed or anything (for a multitude of reasons!!) - But there might be something interesting here, so I will just keep the repository.
+
 ![Goblin](gge.png)
 # Goblin Game Engine ![Goblin](gbln.png)
-
-The reason why I decided to build a "general-purpose" game-engine is because I tried making a game on my game library, gueepo2D, and had a really bad time, so I decided I need some abstractions to be able to make small, simple games really quickly.
-
-Here's what "the goblin game engine"
-
-1. Built with gueepo2D
-2. ~~Resource Manager~~ this was eventually added on gueepo2D/utils
-3. ECS
-4. LUA
-
-And eventually, the goal is to have a visual editor.
-
-1. The editor should be able to create/edit/save/load maps, and tilemaps
-2. The editor should be able to create/edit/save/load entities
-3. The editor should be able to create/edit/save/load scenes
-4. The editor should be able to create/edit/save/load resources
-5. etc., etc.,
-
-The end goal is to be able to create an entire game without coding C++, but if I can and think it's a good idea to do C++ while making a game with The Goblin Game Engine, then cool.
-
----
 
 ### emscripten
 
